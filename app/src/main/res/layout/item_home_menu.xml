@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/home_item_selector"
+    android:padding="12dp">
+    
+    <ImageView 
+        android:id="@+id/home_item_icon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@mipmap/sjfd"/>
+    
+    <TextView 
+        android:id="@+id/home_item_title"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="4dp"
+        android:textSize="25sp"
+        android:layout_toRightOf="@id/home_item_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="手机防盗"/>
+    
+    <TextView 
+        android:id="@+id/home_item_desc"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/home_item_title"
+        android:layout_marginLeft="4dp"
+        android:textColor="#999999"
+        android:textSize="21sp"
+        android:layout_toRightOf="@id/home_item_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="远程定位手机"/>
+</RelativeLayout>

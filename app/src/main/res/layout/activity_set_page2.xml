@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:itheima="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Title"
+        android:gravity="left"
+        android:text="2.绑定Sim卡"/>
+    <TextView
+        style="@style/safe_code"
+        android:text="通过绑定Sim卡:"
+        android:layout_marginLeft="5dp"
+        android:textSize="25sp"
+        />
+    <TextView
+        style="@style/safe_code"
+
+        android:text="下次重启手机如果发现Sim卡变化"
+       />
+    <TextView
+        style="@style/safe_code"
+        android:text="就会发送报警短信"/>
+    <RelativeLayout
+        android:id="@+id/setpage2_relative"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/safe_password_ok"
+        android:padding="5dp" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="点击绑定/解绑SIM卡"
+            android:textSize="23sp"
+            android:textColor="#fff" />
+
+        <ImageView
+            android:id="@+id/setpage2_iv_lock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/unlock" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/setpage2_iv"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/step_2"/>
+        <heima.it.safe.view.MyDotView
+            android:layout_width="wrap_content"
+            android:layout_below="@id/setpage2_iv"
+            android:layout_centerInParent="true"
+            itheima:dotcolor="2"
+            itheima:dotcount="5"
+            android:layout_marginTop="35dp"
+            android:layout_height="wrap_content">
+
+        </heima.it.safe.view.MyDotView>
+        <Button
+            android:id="@+id/set2_return"
+            style="@style/returnButton"/>
+        <Button
+            android:id="@+id/set2_next"
+            style="@style/nextButton"/>
+    </RelativeLayout>
+</LinearLayout>

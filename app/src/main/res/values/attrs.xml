@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MySettingView">
+        <attr name="biaoti" format="string"></attr>
+        <attr name="img" >
+            <enum name="first" value="1"/>
+            <enum name="mid" value="2"/>
+            <enum name="last" value="3"/>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="MyDotView" >
+        <attr name="dotcolor" format="integer" min="1" max="5"></attr>
+        <attr name="dotcount" format="integer"></attr>
+    </declare-styleable>
+</resources>

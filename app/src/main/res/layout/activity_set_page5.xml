@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:itheima="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Title"
+        android:gravity="left"
+        android:text="5.恭喜您,设置完成"/>
+   <CheckBox
+       android:id="@+id/setpage5_cb_project"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:textSize="21sp"
+       android:layout_margin="15dp"
+       android:text="选中开启防盗保护"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/setpage5_iv"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/step_5"/>
+        <heima.it.safe.view.MyDotView
+            android:layout_width="wrap_content"
+            android:layout_below="@id/setpage5_iv"
+            android:layout_centerInParent="true"
+            itheima:dotcolor="5"
+            itheima:dotcount="5"
+            android:layout_marginTop="35dp"
+            android:layout_height="wrap_content">
+
+        </heima.it.safe.view.MyDotView>
+        <Button
+            android:id="@+id/set5_return"
+            style="@style/returnButton"/>
+        <Button
+            android:id="@+id/set5_next"
+            android:text="设置完成"
+            style="@style/nextButton"/>
+    </RelativeLayout>
+</LinearLayout>

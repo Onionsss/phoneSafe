@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="7"
+        android:padding="3dp"
+        android:layout_height="100dp">
+    <ImageView
+        android:id="@+id/iv_softicon"
+        android:layout_width="70dp"
+        android:src="@mipmap/unlock"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="70dp" />
+    <TextView
+        android:id="@+id/tv_soft_appname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_softicon"
+        android:layout_alignTop="@+id/iv_softicon"
+        android:layout_marginLeft="20dp"
+        android:text="woshibiaoti"
+        android:textSize="28sp"
+        android:textColor="@color/black"
+        android:singleLine="true"
+        />
+    <TextView
+        android:id="@+id/tv_soft_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_soft_appname"
+        android:text="手机内存"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/iv_softicon"
+        android:textSize="26sp"
+        android:layout_marginTop="15dp"
+        android:singleLine="true"
+        />
+        <TextView
+            android:id="@+id/tv_soft_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="36kb"
+            android:layout_alignParentRight="true"
+            android:textSize="25sp"
+            android:layout_alignTop="@+id/tv_soft_position"
+            android:singleLine="true"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

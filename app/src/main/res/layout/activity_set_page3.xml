@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:itheima="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Title"
+        android:gravity="left"
+        android:text="3.设置安全号码"/>
+    <TextView
+        style="@style/safe_code"
+        android:text="Sim卡如果发生变化"
+        android:layout_marginLeft="5dp"
+        android:textSize="25sp"
+        />
+    <TextView
+        style="@style/safe_code"
+        android:text="就会给安全号码发送短信"
+        />
+    <EditText
+        android:id="@+id/setpage3_edt_phone"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textSize="21sp"
+        android:gravity="center"
+        android:hint="请输入安全号码"/>
+    <RelativeLayout
+        android:id="@+id/setpage3_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/safe_password_ok"
+        android:clickable="true"
+        android:padding="5dp" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+            android:text="选择联系人"
+            android:textSize="23sp"
+            android:textColor="#fff" />
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/setpage3_iv"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/step_3"/>
+        <heima.it.safe.view.MyDotView
+            android:layout_width="wrap_content"
+            android:layout_below="@id/setpage3_iv"
+            android:layout_centerInParent="true"
+            itheima:dotcolor="3"
+            itheima:dotcount="5"
+            android:layout_marginTop="35dp"
+            android:layout_height="wrap_content">
+
+        </heima.it.safe.view.MyDotView>
+        <Button
+            android:id="@+id/set3_return"
+            style="@style/returnButton"/>
+        <Button
+            android:id="@+id/set3_next"
+            style="@style/nextButton"/>
+    </RelativeLayout>
+</LinearLayout>
