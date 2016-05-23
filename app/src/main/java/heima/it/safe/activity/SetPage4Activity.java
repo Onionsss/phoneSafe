@@ -16,6 +16,7 @@ import heima.it.safe.utils.SpUtil;
 public class SetPage4Activity extends BaseActivity {
 
 
+    private static final int REQUEST_CODE_ENABLE_ADMIN = 102;
     @Bind(R.id.setpage4_iv_dun)
     ImageView setpage4_iv_dun;
     @Bind(R.id.setpage4_relative)
@@ -28,27 +29,39 @@ public class SetPage4Activity extends BaseActivity {
         ButterKnife.bind(this);
         initView();
     }
+
     @OnClick(R.id.setpage4_relative)
     public void onClick() {
-                Toast.makeText(SetPage4Activity.this, "111", Toast.LENGTH_SHORT).show();
-                boolean flag = SpUtil.getBoolean(this, Constant.ADMIN, false);
-                if (flag) {
-                    setpage4_iv_dun.setImageResource(R.mipmap.admin_inactivated);
-                    SpUtil.putBoolean(this, Constant.ADMIN, false);
-                } else {
-                    setpage4_iv_dun.setImageResource(R.mipmap.admin_activated);
-                    SpUtil.putBoolean(this, Constant.ADMIN, true);
-                }
-    }
-    private void initView() {
-        Boolean flag = SpUtil.getBoolean(this, Constant.ADMIN, false);
-        if(flag){
-            setpage4_iv_dun.setImageResource(R.mipmap.admin_activated);
-        }else{
+        boolean flag = SpUtil.getBoolean(this, Constant.ADMIN, false);
+        if (flag) {
             setpage4_iv_dun.setImageResource(R.mipmap.admin_inactivated);
+            SpUtil.putBoolean(this, Constant.ADMIN, false);
+        } else {
+            setpage4_iv_dun.setImageResource(R.mipmap.admin_activated);
+            SpUtil.putBoolean(this, Constant.ADMIN, true);
+//            startAdmin();
         }
     }
 
+    /**
+     * 激活设备管理器
+     */
+    private void startAdmin() {
+//        Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+//        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdminSample);
+//        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+//                mActivity.getString(R.string.add_admin_extra_app_text));
+//        startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
+    }
+
+    private void initView() {
+        Boolean flag = SpUtil.getBoolean(this, Constant.ADMIN, false);
+        if (flag) {
+            setpage4_iv_dun.setImageResource(R.mipmap.admin_activated);
+        } else {
+            setpage4_iv_dun.setImageResource(R.mipmap.admin_inactivated);
+        }
+    }
 
     @Override
     public void next() {
@@ -59,7 +72,6 @@ public class SetPage4Activity extends BaseActivity {
             super.next();
         }
     }
-
 
     @Override
     public Class<? extends Activity> getNextClass() {

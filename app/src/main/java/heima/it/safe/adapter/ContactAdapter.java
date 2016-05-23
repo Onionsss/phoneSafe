@@ -58,7 +58,7 @@ public class ContactAdapter extends BaseAdapter{
         ContactInfo info = list.get(position-1);
         ViewHolder holder = new ViewHolder();
 
-        if(convertView != null && info instanceof ContactInfo){
+        if(convertView != null && info instanceof ContactInfo && convertView.getTag() != null){
             holder = (ViewHolder) convertView.getTag();
         }else{
             convertView = View.inflate(context, R.layout.item_contact, null);

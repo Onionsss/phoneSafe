@@ -111,9 +111,9 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 if(pwd.equals(SpUtil.getString(HomeActivity.this,Constant.CHECKPASSWORD,""))){
                     if(SpUtil.getBoolean(HomeActivity.this,Constant.SAFE_SET_OK,false)) {
-                        startActivity(new Intent(HomeActivity.this, SetPage1Activity.class));
-                    }else{
                         startActivity(new Intent(HomeActivity.this, SetActivity.class));
+                    }else{
+                        startActivity(new Intent(HomeActivity.this, SetPage1Activity.class));
                     }
                     dialog.dismiss();
                 }

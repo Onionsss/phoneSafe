@@ -54,7 +54,6 @@ public class SetPage5Activity extends BaseActivity {
         } else {
             Toast.makeText(this, "请开启防盗保护", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override

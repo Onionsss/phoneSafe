@@ -3,8 +3,6 @@ package heima.it.safe.activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,6 +33,7 @@ import butterknife.ButterKnife;
 import heima.it.safe.R;
 import heima.it.safe.constant.Constant;
 import heima.it.safe.utils.OkUtils;
+import heima.it.safe.utils.PackageUtil;
 import heima.it.safe.utils.SpUtil;
 import heima.it.safe.utils.StreamJson;
 import okhttp3.Response;
@@ -228,7 +227,7 @@ public class SplashActivity extends AppCompatActivity {
         /**
          * 动态的更新版本
          */
-        splash_tv_version.setText("版本号:" + getVersionName());
+        splash_tv_version.setText("版本号:" + PackageUtil.getVersionName(this));
         /**
          * 通过网络检查是否有更高的版本
          * 是否需要更新  通过getVerisonCode()方法和网络获取的版本号来判断
@@ -272,7 +271,7 @@ public class SplashActivity extends AppCompatActivity {
                         /**
                          * 如果版本大于现在的版本则提示更新
                          */
-                        if (mVersionCode > getVersionCode()) {
+                        if (mVersionCode > PackageUtil.getVersionCode(SplashActivity.this)) {
                             msg.what = UPDATE;
                         } else {
                             msg.what = NO_UPDATE;
@@ -303,39 +302,7 @@ public class SplashActivity extends AppCompatActivity {
         }.start();
     }
 
-    /**
-     * 拿到版本名
-     *
-     * @return 版本名VersionName
-     */
-    private String getVersionName() {
 
-        try {
-            //拿到包管理者  并且获得信息API
-            PackageInfo packgeInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            String versionName = packgeInfo.versionName;
-            return versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 拿到版本号  用于判断是否需要更新
-     * @return 版本号
-     */
-    private int getVersionCode() {
-        try {
-            //拿到包管理者  并且获得信息API
-            PackageInfo packgeInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            int versionCode = packgeInfo.versionCode;
-            return versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
     private void enterHome(){
         startActivity(new Intent(SplashActivity.this,HomeActivity.class));
         finish();
