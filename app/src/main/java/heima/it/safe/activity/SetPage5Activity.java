@@ -65,6 +65,4 @@ public class SetPage5Activity extends BaseActivity {
     public Class<? extends Activity> getReturnClass() {
         return SetPage4Activity.class;
     }
-
-
 }

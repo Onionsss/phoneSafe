@@ -27,11 +27,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import heima.it.safe.R;
+import heima.it.safe.bean.BlackNumber;
 import heima.it.safe.constant.Constant;
+import heima.it.safe.dao.BlackNumberDaoImpl;
 import heima.it.safe.utils.OkUtils;
 import heima.it.safe.utils.PackageUtil;
 import heima.it.safe.utils.SpUtil;
@@ -218,7 +221,18 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        test();
         initView();
+    }
+
+    /**
+     * 测试数据库
+     */
+    private void test() {
+        BlackNumberDaoImpl bndi = new BlackNumberDaoImpl(this);
+        for (int i = 0; i <= 20; i++) {
+            boolean seccess = bndi.insert(new BlackNumber("张琦"+i, "1327066570"+i, (new Random().nextInt(3)+1)+""));
+        }
     }
 
     private void initView() {

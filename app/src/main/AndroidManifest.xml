@@ -53,11 +53,8 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".receiver.SmsReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
+        <receiver android:name=".receiver.SmsReceiver">
+            <intent-filter android:priority="1000000">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
             </intent-filter>
         </receiver>
@@ -66,27 +63,36 @@
         </activity>
 
         <service
-            android:name=".LocationService"
+            android:name=".service.LocationService"
             android:enabled="true"
             android:exported="true">
         </service>
-       <!-- <activity android:name=".app.DeviceAdminSample"
-                  android:label="@string/activity_sample_device_admin">
+        <!--
+         <activity android:name=".app.DeviceAdminSample"
+                   android:label="@string/activity_sample_device_admin">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+                 <category android:name="android.intent.category.SAMPLE_CODE" />
+             </intent-filter>
+         </activity>
+        -->
+
+        <receiver
+            android:name=".receiver.MyAdminReceiver"
+            android:description="@string/sample_device_admin_description"
+            android:label="@string/sample_device_admin"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_sample"/>
+
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.SAMPLE_CODE" />
-            </intent-filter>
-        </activity>-->
-        <receiver android:name=".utils.MyAdminReceiver"
-                  android:label="@string/sample_device_admin"
-                  android:description="@string/sample_device_admin_description"
-                  android:permission="android.permission.BIND_DEVICE_ADMIN">
-            <meta-data android:name="android.app.device_admin"
-                       android:resource="@xml/device_admin_sample" />
-            <intent-filter>
-                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
             </intent-filter>
         </receiver>
+
+        <activity android:name=".activity.BlackNumberActivity">
+        </activity>
     </application>
 
 </manifest>

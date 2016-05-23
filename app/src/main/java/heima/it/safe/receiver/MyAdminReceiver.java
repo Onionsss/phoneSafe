@@ -1,4 +1,4 @@
-package heima.it.safe.utils;
+package heima.it.safe.receiver;
 
 import android.app.admin.DeviceAdminReceiver;
 

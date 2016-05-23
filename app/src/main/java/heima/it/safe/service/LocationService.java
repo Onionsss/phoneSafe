@@ -1,4 +1,4 @@
-package heima.it.safe;
+package heima.it.safe.service;
 
 import android.Manifest;
 import android.app.Service;
@@ -51,7 +51,6 @@ public class LocationService extends Service {
                 /**
                  * 访问接口 将经纬度转换为详细地址
                  */
-
                 SmsManager sm = SmsManager.getDefault();
                 String safePhone = SpUtil.getString(LocationService.this, Constant.SAFE_PHONE, "");
                 sm.sendTextMessage(safePhone, null, "altitude" + altitude + "longitude" + longitude, null, null);

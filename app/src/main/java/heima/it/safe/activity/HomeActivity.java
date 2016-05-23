@@ -63,6 +63,9 @@ public class HomeActivity extends AppCompatActivity {
                     case 0:
                         checkPassword();
                         break;
+                    case 1:
+                        startActivity(new Intent(HomeActivity.this,BlackNumberActivity.class));
+                        break;
                     case 2:
                         startActivity(new Intent(HomeActivity.this,AppManagerActivity.class));
                         break;
