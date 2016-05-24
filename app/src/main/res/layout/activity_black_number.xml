@@ -4,15 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-   >
-    <TextView
-        style="@style/Title"
-        android:text="黑名单管理"
+    >
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="黑名单管理"/>
+
+        <ImageView
+            android:id="@+id/blacknumber_iv_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:clickable="true"
+            android:src="@drawable/blacknumber_select"/>
+    </RelativeLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/blacknumber_iv"
             android:layout_width="wrap_content"
@@ -20,6 +38,7 @@
             android:layout_gravity="center"
             android:src="@mipmap/loading"
             />
+
         <ListView
             android:id="@+id/blacknumber_listview"
             android:layout_width="match_parent"

@@ -93,6 +93,8 @@
 
         <activity android:name=".activity.BlackNumberActivity">
         </activity>
+        <activity android:name=".activity.AddBlackNumberActivity">
+        </activity>
     </application>
 
 </manifest>

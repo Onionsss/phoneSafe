@@ -59,7 +59,6 @@ public class BlackNumberDaoImpl implements BlackNumberDao{
         while(cursor.moveToNext()){
             list.add(new BlackNumber(cursor.getString(cursor.getColumnIndex(NAME)),cursor.getString(cursor.getColumnIndex(PHONE)),cursor.getString(cursor.getColumnIndex(MODE))));
         }
-
         db.close();
         cursor.close();
         return list;

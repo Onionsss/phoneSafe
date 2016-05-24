@@ -10,12 +10,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class BlackNumberOpenHelp extends SQLiteOpenHelper{
 
     public BlackNumberOpenHelp(Context context) {
-        super(context, "black.db", null, 1);
+        super(context, BlackListConstants.DB_NAME, null, BlackListConstants.DB_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table blacknumber(_id integer primary key autoincrement,name varchar(30),phone varchar(30) UNIQUE,mode varchar(20))");
+        db.execSQL(BlackListConstants.SQL_CREATE_TABLE);
     }
 
     @Override

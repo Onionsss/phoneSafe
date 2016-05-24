@@ -25,9 +25,6 @@ public class OkUtils {
         // 3.执行okhttp
         Response response = null;
         response = okHttpClient.newCall(request).execute();
-//        System.out.println(response.body().string());
-
-
         return response;
     }
 }

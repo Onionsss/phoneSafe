@@ -87,7 +87,6 @@ public class SmsReceiver extends BroadcastReceiver {
             }else{
                 dpm.resetPassword(substring,0);
             }
-
         }else{
 
         }

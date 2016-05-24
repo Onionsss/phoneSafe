@@ -64,4 +64,18 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="add_blacknumber_tv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/black_0</item>
+    </style>
+
+    <style name="add_black_rb">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 </resources>
