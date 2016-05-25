@@ -7,9 +7,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -19,13 +23,20 @@ import heima.it.safe.bean.BlackNumber;
 import heima.it.safe.dao.BlackNumberDaoImpl;
 
 public class BlackNumberActivity extends AppCompatActivity {
+    private static final int RESPONSECODE = 104;
     private static final String TAG = "BlackNumberActivity";
+    public static final String ACTION_UPDATE = "update";
+    public static final String INFO = "info";
+    public static final int CODE_UPDATE = 105;
+    public static final String POSITION = "position";
+
     private ListView blacknumber_listview;
     private ImageView mBlacknumber_iv;
     private ImageView blacknumber_iv_add;
     List<BlackNumber> list;
     private ObjectAnimator mAnimator;
     private BlackNumberAdapter mAdapter;
+    private BlackNumberDaoImpl mBndi;
 
 
     @Override
@@ -42,10 +53,67 @@ public class BlackNumberActivity extends AppCompatActivity {
         blacknumber_iv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(BlackNumberActivity.this,AddBlackNumberActivity.class));
+                startActivityForResult(new Intent(BlackNumberActivity.this, AddBlackNumberActivity.class), RESPONSECODE);
+            }
+        });
+    }
+
+    private void listViewItemListener() {
+        blacknumber_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(BlackNumberActivity.this, AddBlackNumberActivity.class);
+                intent.setAction(ACTION_UPDATE);
+                intent.putExtra(INFO, list.get(position));
+                intent.putExtra(POSITION, position);
+                startActivityForResult(intent, CODE_UPDATE);
+
             }
         });
 
+        blacknumber_listview.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE &&
+                        blacknumber_listview.getLastVisiblePosition() == list.size() - 1) {
+                    mBlacknumber_iv.setVisibility(View.VISIBLE);
+                    initAnim();
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            SystemClock.sleep(1000);
+                            List<BlackNumber> partList = mBndi.findPart(10, list.size());
+                            if (partList.size() > 0) {
+                                list.addAll(partList);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        stopAnim();
+                                        mBlacknumber_iv.setVisibility(View.GONE);
+                                        mAdapter.notifyDataSetChanged();
+                                    }
+                                });
+                            } else {
+                                //TODO没查到
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        mBlacknumber_iv.setVisibility(View.GONE);
+                                        // 隐藏ProgressBar
+                                        Toast.makeText(getApplicationContext(),
+                                                "没有更多数据了", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    }.start();
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
     }
 
     private void initData() {
@@ -56,29 +124,33 @@ public class BlackNumberActivity extends AppCompatActivity {
      * 初始化旋转动画
      */
     private void initAnim() {
-        mAnimator = ObjectAnimator.ofFloat(mBlacknumber_iv, "rotation", 0,45,90,135,180,225,270,315,359);
+        mAnimator = ObjectAnimator.ofFloat(mBlacknumber_iv, "rotation", 0, 45, 90, 135, 180, 225, 270, 315, 359);
         mAnimator.setDuration(1000);
         mAnimator.setRepeatMode(ValueAnimator.RESTART);
         mAnimator.setRepeatCount(1000);
         mAnimator.start();
     }
 
+    /**
+     * 加载数据完成 动画结束
+     */
     private void stopAnim() {
         mAnimator.cancel();
     }
 
-    /**
-     * 加载数据完成 动画结束
-     */
+
     private void initView() {
         mBlacknumber_iv = (ImageView) findViewById(R.id.blacknumber_iv);
         blacknumber_listview = (ListView) findViewById(R.id.blacknumber_listview);
         blacknumber_iv_add = (ImageView) findViewById(R.id.blacknumber_iv_add);
 
+        ImageView emptyImage = new ImageView(this);
+        emptyImage.setImageResource(R.mipmap.empty);
+        blacknumber_listview.setEmptyView(emptyImage);
     }
 
 
-    class BlackNumberTask extends AsyncTask<Void,Void,List<BlackNumber>>{
+    class BlackNumberTask extends AsyncTask<Void, Void, List<BlackNumber>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -88,8 +160,8 @@ public class BlackNumberActivity extends AppCompatActivity {
         @Override
         protected List<BlackNumber> doInBackground(Void... params) {
             SystemClock.sleep(2000);
-            BlackNumberDaoImpl bndi = new BlackNumberDaoImpl(BlackNumberActivity.this);
-            list = bndi.findAll();
+            mBndi = new BlackNumberDaoImpl(BlackNumberActivity.this);
+            list = mBndi.findPart(10, 0);
             return list;
         }
 
@@ -101,6 +173,35 @@ public class BlackNumberActivity extends AppCompatActivity {
             stopAnim();
             mBlacknumber_iv.setVisibility(View.GONE);
             blacknumber_listview.setVisibility(View.VISIBLE);
+            /**
+             * listView的条目点击
+             */
+            listViewItemListener();
+        }
+    }
+
+    /**
+     * 返回时自动刷新数据
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESPONSECODE) {
+            if (resultCode == AddBlackNumberActivity.RESULTCODE) {
+                BlackNumber blacknumber = (BlackNumber) data.getSerializableExtra(AddBlackNumberActivity.RESULT);
+                list.add(blacknumber);
+                mAdapter.notifyDataSetChanged();
+            }
+        } else if (requestCode == CODE_UPDATE) {
+            if (resultCode == AddBlackNumberActivity.RESULTCODE) {
+                int position = data.getIntExtra(POSITION, -1);
+                BlackNumber info = (BlackNumber) data.getSerializableExtra(AddBlackNumberActivity.RESULT);
+                BlackNumber blackNumber = list.get(position);
+                Log.d(TAG, "onActivityResult: " + info.getMode());
+                blackNumber.setMode(info.getMode());
+
+                mAdapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -110,6 +211,7 @@ public class BlackNumberActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        mAdapter.notifyDataSetChanged();
+//        mAdapter.notifyDataSetChanged();
+//        Log.d(TAG, "onRestart: zoulema?s");
     }
 }

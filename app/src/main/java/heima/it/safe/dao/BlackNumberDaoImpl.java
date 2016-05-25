@@ -38,13 +38,28 @@ public class BlackNumberDaoImpl implements BlackNumberDao{
 
     @Override
     public boolean delete(BlackNumber bn) {
-        return false;
+        SQLiteDatabase db = help.getWritableDatabase();
+        int delete = db.delete(TABLE_NAME, PHONE + "=?", new String[]{bn.getPhone()});
+
+        db.close();
+        return delete != 0;
     }
 
     @Override
     public boolean update(BlackNumber bn) {
-        return false;
+        SQLiteDatabase db = help.getWritableDatabase();
+        // update blacklist set blacklist_type = 1 where blacklist_number = '1001';
+        String table = TABLE_NAME;
+        ContentValues values = new ContentValues();
+        values.put(MODE, bn.getMode());
+        String whereClause =  PHONE+"=?";
+        String[] whereArgs = new String[]{bn.getPhone()};
+        // 参2, 修改哪一列为什么值, 参3 where条件, 参4: where条件参数
+        int update = db.update(table , values , whereClause , whereArgs);
+        db.close();
+        return update != 0;
     }
+
 
     @Override
     public BlackNumber find(BlackNumber bn) {
@@ -62,5 +77,36 @@ public class BlackNumberDaoImpl implements BlackNumberDao{
         db.close();
         cursor.close();
         return list;
+    }
+
+
+    /**
+     * 分页/分批查询
+     * @param limit 每次查询多少条数据
+     * @param offset 偏移量
+     * @return
+     */
+    @Override
+    public List<BlackNumber> findPart(int limit, int offset) {
+        // select blacklist_number, blacklist_type from blacklist limit 10 offset 20;
+        SQLiteDatabase db = help.getReadableDatabase();
+        String sql = "select " + PHONE + ", "
+                + MODE + ","+NAME+" from "
+                + TABLE_NAME + " limit ? offset ? ";
+        String[] selectionArgs = new String[] {limit+"", String.valueOf(offset)};
+        Cursor cursor = db.rawQuery(sql, selectionArgs);
+        List<BlackNumber> infos = new ArrayList<BlackNumber>();
+        if(cursor != null) {
+            while (cursor.moveToNext()) {
+                String phone = cursor.getString(0);
+                String mode = cursor.getString(1);
+                String name = cursor.getString(2);
+                BlackNumber info = new BlackNumber(name,phone,mode);
+                infos.add(info);
+            }
+            cursor.close();
+        }
+        db.close();
+        return infos;
     }
 }

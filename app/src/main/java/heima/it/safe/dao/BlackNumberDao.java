@@ -35,4 +35,6 @@ public interface BlackNumberDao {
     BlackNumber find(BlackNumber bn);
 
     List<BlackNumber> findAll();
+
+    List<BlackNumber> findPart(int limit, int offset);
 }
