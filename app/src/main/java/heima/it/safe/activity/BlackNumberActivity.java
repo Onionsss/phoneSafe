@@ -23,11 +23,14 @@ import heima.it.safe.bean.BlackNumber;
 import heima.it.safe.dao.BlackNumberDaoImpl;
 
 public class BlackNumberActivity extends AppCompatActivity {
+    public static final int CODE_UPDATE = 105;
     private static final int RESPONSECODE = 104;
     private static final String TAG = "BlackNumberActivity";
     public static final String ACTION_UPDATE = "update";
+    /**
+     * 代表传过去blackNunber对象
+     */
     public static final String INFO = "info";
-    public static final int CODE_UPDATE = 105;
     public static final String POSITION = "position";
 
     private ListView blacknumber_listview;
@@ -70,7 +73,10 @@ public class BlackNumberActivity extends AppCompatActivity {
 
             }
         });
-
+        /**
+         * ListView滚动监听
+         * 滚动到最后一条item时加载数据
+         */
         blacknumber_listview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -116,6 +122,9 @@ public class BlackNumberActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 开启子线程执行查询的任务
+     */
     private void initData() {
         new BlackNumberTask().execute();
     }
@@ -124,7 +133,7 @@ public class BlackNumberActivity extends AppCompatActivity {
      * 初始化旋转动画
      */
     private void initAnim() {
-        mAnimator = ObjectAnimator.ofFloat(mBlacknumber_iv, "rotation", 0, 45, 90, 135, 180, 225, 270, 315, 359);
+        mAnimator = ObjectAnimator.ofFloat(mBlacknumber_iv, "rotation", 0, 45, 90, 135, 180, 225, 270, 315, 360);
         mAnimator.setDuration(1000);
         mAnimator.setRepeatMode(ValueAnimator.RESTART);
         mAnimator.setRepeatCount(1000);
@@ -161,6 +170,9 @@ public class BlackNumberActivity extends AppCompatActivity {
         protected List<BlackNumber> doInBackground(Void... params) {
             SystemClock.sleep(2000);
             mBndi = new BlackNumberDaoImpl(BlackNumberActivity.this);
+            /**
+             * 分页查找 一次10条数据
+             */
             list = mBndi.findPart(10, 0);
             return list;
         }
@@ -172,7 +184,6 @@ public class BlackNumberActivity extends AppCompatActivity {
             blacknumber_listview.setAdapter(mAdapter);
             stopAnim();
             mBlacknumber_iv.setVisibility(View.GONE);
-            blacknumber_listview.setVisibility(View.VISIBLE);
             /**
              * listView的条目点击
              */
@@ -182,6 +193,7 @@ public class BlackNumberActivity extends AppCompatActivity {
 
     /**
      * 返回时自动刷新数据
+     * 通过requestCode 来判断是更新返回还是添加返回
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -205,13 +217,4 @@ public class BlackNumberActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * 返回时自动刷新数据
-     */
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-//        mAdapter.notifyDataSetChanged();
-//        Log.d(TAG, "onRestart: zoulema?s");
-    }
 }

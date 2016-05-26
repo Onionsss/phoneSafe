@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
 
     <application
         android:allowBackup="true"
@@ -98,6 +99,17 @@
 
         <service
             android:name=".service.BlackNumberService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+
+        <activity android:name=".activity.HighUtilsActivity">
+        </activity>
+        <activity android:name=".activity.AddressActivity">
+        </activity>
+
+        <service
+            android:name=".service.AddressService"
             android:enabled="true"
             android:exported="true">
         </service>

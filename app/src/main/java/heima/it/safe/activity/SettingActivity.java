@@ -10,6 +10,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import heima.it.safe.R;
 import heima.it.safe.constant.Constant;
+import heima.it.safe.service.AddressService;
 import heima.it.safe.service.BlackNumberService;
 import heima.it.safe.utils.SpUtil;
 import heima.it.safe.view.MySettingView;
@@ -22,6 +23,7 @@ public class SettingActivity extends AppCompatActivity {
 
 
     private MySettingView mysetting_lanjie;
+    private MySettingView mMysetting_addressshow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +42,17 @@ public class SettingActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        boolean isRun = ServiceRunning.isServiceRunning(SettingActivity.this, BlackNumberService.class);
-        mysetting_lanjie.setChecked(isRun);
+        /**
+         * 黑名单服务
+         */
+        boolean blackNukberRun = ServiceRunning.isServiceRunning(this, BlackNumberService.class);
+        mysetting_lanjie.setChecked(blackNukberRun);
+
+        /**
+         * 归属地服务
+         */
+        boolean addressRun = ServiceRunning.isServiceRunning(this, AddressService.class);
+        mMysetting_addressshow.setChecked(addressRun);
     }
 
     private void initListener() {
@@ -52,8 +63,8 @@ public class SettingActivity extends AppCompatActivity {
         mysetting_lanjie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isRun = ServiceRunning.isServiceRunning(SettingActivity.this, BlackNumberService.class);
-                if(!isRun){
+                boolean blackNukberRun = ServiceRunning.isServiceRunning(SettingActivity.this, BlackNumberService.class);
+                if(!blackNukberRun){
                     startService(new Intent(SettingActivity.this,BlackNumberService.class));
                 }else{
                     stopService(new Intent(SettingActivity.this,BlackNumberService.class));
@@ -61,15 +72,31 @@ public class SettingActivity extends AppCompatActivity {
                 mysetting_lanjie.check();
             }
         });
+
+        mMysetting_addressshow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean addressRun = ServiceRunning.isServiceRunning(SettingActivity.this, AddressService.class);
+                if(!addressRun){
+                    startService(new Intent(SettingActivity.this,AddressService.class));
+                }else{
+                    stopService(new Intent(SettingActivity.this,AddressService.class));
+                }
+                mMysetting_addressshow.check();
+            }
+        });
     }
 
     private void initView() {
         mysetting_lanjie = (MySettingView) findViewById(R.id.mysetting_lanjie);
+        mMysetting_addressshow = (MySettingView) findViewById(R.id.mysetting_addressshow);
+
         boolean flag = SpUtil.getBoolean(this, Constant.AUTO_UPDATE, true);
         mysetting_aotu.setChecked(flag);
+
     }
 
-    @OnClick({R.id.mysetting_aotu, R.id.mysetting_lanjie})
+    @OnClick({R.id.mysetting_aotu})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mysetting_aotu:
@@ -78,8 +105,6 @@ public class SettingActivity extends AppCompatActivity {
                  */
                 SpUtil.putBoolean(this,Constant.AUTO_UPDATE,!mysetting_aotu.isChecked());
                 mysetting_aotu.check();
-                break;
-            case R.id.mysetting_lanjie:
                 break;
         }
     }

@@ -13,5 +13,10 @@ public interface BlackListConstants {
     String FIELD_PHONE = "phone";
     String FIELD_MODE = "mode";
 
+    String MODE_1 = "1";
+    String MODE_2 = "2";
+    String MODE_3 = "3";
+    String MODE_NONE = "none";
+
     String SQL_CREATE_TABLE = "create table " + TABLE_NAME + "(" + FIELD_ID + " integer primary key autoincrement," + FIELD_NAME + " varchar(30)," + FIELD_PHONE + " varchar(30) UNIQUE," + FIELD_MODE + " varchar(20))";
 }

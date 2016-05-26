@@ -29,6 +29,8 @@ public class MySettingView extends RelativeLayout{
         mMysetting_iv = (ImageView) view.findViewById(R.id.mysetting_iv);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MySettingView);
         String title = a.getString(R.styleable.MySettingView_biaoti);
+        boolean mybutton = a.getBoolean(R.styleable.MySettingView_mybutton, true);
+        mMysetting_iv.setVisibility(mybutton?View.VISIBLE:View.GONE);
         mMysetting_tv.setText(title);
         int value = a.getInt(R.styleable.MySettingView_img,-1);
         if(value == -1){
@@ -46,7 +48,6 @@ public class MySettingView extends RelativeLayout{
                 break;
         }
         a.recycle();
-
     }
     public boolean isChecked(){
         return mCheck;

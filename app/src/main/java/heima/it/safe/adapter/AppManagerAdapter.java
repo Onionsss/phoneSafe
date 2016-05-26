@@ -29,9 +29,10 @@ public class AppManagerAdapter extends BaseAdapter{
         this.systemApp = systemApp;
         this.userApp = userApp;
     }
+
     @Override
     public int getCount() {
-        return appList.size()+2;
+        return systemApp.size()+userApp.size()+2;
     }
 
     @Override
@@ -61,13 +62,17 @@ public class AppManagerAdapter extends BaseAdapter{
             TextView tv = new TextView(context);
             tv.setText("用户程序"+"("+userApp.size()+"个)");
             tv.setTextSize(25);
-            tv.setTextColor(Color.RED);
+            tv.setPadding(5,5,5,5);
+            tv.setBackgroundColor(Color.GRAY);
+            tv.setTextColor(Color.BLACK);
             return tv;
         }else if(position == userApp.size()+1){
             TextView tv = new TextView(context);
             tv.setText("系统程序"+"("+systemApp.size()+"个)");
             tv.setTextSize(25);
-            tv.setTextColor(Color.RED);
+            tv.setPadding(5,5,5,5);
+            tv.setBackgroundColor(Color.GRAY);
+            tv.setTextColor(Color.BLACK);
             return tv;
         }
         AppInfo app;

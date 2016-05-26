@@ -5,8 +5,8 @@
                 android:paddingBottom="20dp"
                 android:paddingLeft="40dp"
                 android:paddingRight="40dp"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="20dp">
+    android:layout_centerHorizontal="true"
+    android:paddingTop="20dp">
 
     <TextView
         android:id="@+id/mysetting_tv"

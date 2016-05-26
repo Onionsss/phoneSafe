@@ -37,4 +37,6 @@ public interface BlackNumberDao {
     List<BlackNumber> findAll();
 
     List<BlackNumber> findPart(int limit, int offset);
+
+    String findMode(String phone);
 }

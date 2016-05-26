@@ -14,6 +14,7 @@ import android.widget.Toast;
 import heima.it.safe.R;
 import heima.it.safe.bean.BlackNumber;
 import heima.it.safe.dao.BlackNumberDaoImpl;
+import heima.it.safe.db.BlackListConstants;
 
 /**
  * 默认是短信+电话拦截
@@ -103,13 +104,13 @@ public class AddBlackNumberActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId){
                     case R.id.add_black_rb1:
-                        lastChecked = "1";
+                        lastChecked = BlackListConstants.MODE_1;
                     break;
                     case R.id.add_black_rb2:
-                        lastChecked = "2";
+                        lastChecked = BlackListConstants.MODE_2;
                         break;
                     case R.id.add_black_rb3:
-                        lastChecked = "3";
+                        lastChecked = BlackListConstants.MODE_3 ;
                         break;
                 }
             }

@@ -30,4 +30,22 @@
         itheima:img="last"
         >
     </heima.it.safe.view.MySettingView>
+    <heima.it.safe.view.MySettingView
+        android:id="@+id/mysetting_addressshow"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        itheima:biaoti="归属地显示设置"
+        itheima:img="first"
+        >
+    </heima.it.safe.view.MySettingView>
+    <heima.it.safe.view.MySettingView
+        android:id="@+id/mysetting_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        itheima:biaoti="归属地风格设置"
+        itheima:img="last"
+        itheima:mybutton="false"
+        >
+    </heima.it.safe.view.MySettingView>
 </LinearLayout>

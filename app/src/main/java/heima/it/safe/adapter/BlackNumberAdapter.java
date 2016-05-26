@@ -13,6 +13,7 @@ import java.util.List;
 import heima.it.safe.R;
 import heima.it.safe.bean.BlackNumber;
 import heima.it.safe.dao.BlackNumberDaoImpl;
+import heima.it.safe.db.BlackListConstants;
 
 /**
  * 作者：张琦 on 2016/5/23 20:16
@@ -59,11 +60,11 @@ public class BlackNumberAdapter extends BaseAdapter{
         final BlackNumber item = getItem(position);
         holder.tv_bn_name.setText(item.getName());
         holder.tv_bn_number.setText(item.getPhone());
-        if("3".equals(item.getMode())){
+        if(BlackListConstants.MODE_3.equals(item.getMode())){
             holder.tv_bn_mode.setText("短信+电话拦截");
-        }else if("2".equals(item.getMode())){
+        }else if(BlackListConstants.MODE_2.equals(item.getMode())){
             holder.tv_bn_mode.setText("短信拦截");
-        }else if("1".equals(item.getMode())){
+        }else if(BlackListConstants.MODE_1.equals(item.getMode())){
             holder.tv_bn_mode.setText("电话拦截");
         }
         holder.tv_bn_address.setText("(江苏南通联通)");

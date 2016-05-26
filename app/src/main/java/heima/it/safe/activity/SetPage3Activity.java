@@ -50,7 +50,7 @@ public class SetPage3Activity extends BaseActivity {
     }
 
     /**
-     * 点击加载联系人 TODO
+     * 点击加载联系人
      */
     @OnClick(R.id.setpage3_relative)
     public void onClick() {

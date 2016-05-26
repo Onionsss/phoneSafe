@@ -7,6 +7,7 @@
             <enum name="mid" value="2"/>
             <enum name="last" value="3"/>
         </attr>
+        <attr name="mybutton" format="boolean"></attr>
     </declare-styleable>
     <declare-styleable name="MyDotView" >
         <attr name="dotcolor" format="integer" min="1" max="5"></attr>

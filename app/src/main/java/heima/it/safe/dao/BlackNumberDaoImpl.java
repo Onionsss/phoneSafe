@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import heima.it.safe.bean.BlackNumber;
+import heima.it.safe.db.BlackListConstants;
 import heima.it.safe.db.BlackNumberOpenHelp;
 
 /**
@@ -108,5 +109,19 @@ public class BlackNumberDaoImpl implements BlackNumberDao{
         }
         db.close();
         return infos;
+    }
+
+    @Override
+    public String findMode(String phone) {
+        String mode = BlackListConstants.FIELD_MODE;
+        SQLiteDatabase db = help.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, new String[]{MODE}, PHONE + "=?", new String[]{phone}, null, null, null);
+        if(cursor != null){
+            if(cursor.moveToNext()){
+                mode = cursor.getString(0);
+            }
+            cursor.close();
+        }
+        return mode;
     }
 }

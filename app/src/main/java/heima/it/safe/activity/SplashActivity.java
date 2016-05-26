@@ -130,7 +130,7 @@ public class SplashActivity extends AppCompatActivity {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        down();//TODO  按下确定开始下载
+                        down();
                     }
                 })
                 .show();
@@ -151,7 +151,8 @@ public class SplashActivity extends AppCompatActivity {
             Toast.makeText(this, "没有SD卡,无法下载!", Toast.LENGTH_SHORT).show();
         }
     }
-    class downAPK implements Runnable{
+
+    class downAPK implements Runnable {
         @Override
         public void run() {
 
@@ -169,7 +170,7 @@ public class SplashActivity extends AppCompatActivity {
                 int totalDown = 0;
                 while ((len = is.read(b)) != -1) {
                     os.write(b, 0, len);
-                    totalDown+=len;
+                    totalDown += len;
                     mProgressDialog.setProgress(totalDown);
                 }
                 os.flush();
@@ -180,7 +181,7 @@ public class SplashActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(SplashActivity.this,"下载完成,等待安装!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SplashActivity.this, "下载完成,等待安装!", Toast.LENGTH_SHORT).show();
                     }
                 });
                 installApk(file);
@@ -192,8 +193,10 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
     }
+
     /**
      * 关流的操作
+     *
      * @param close
      */
     private void Closed(Closeable close) {
@@ -206,6 +209,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
     }
+
     /**
      * 安装Apk
      */
@@ -218,11 +222,36 @@ public class SplashActivity extends AppCompatActivity {
         intent.setDataAndType(data, "application/vnd.android.package-archive");
         startActivityForResult(intent, SPLASH_INSTALL);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        test();
+//        test();
         initView();
+        initData();
+    }
+
+    private void initData() {
+        InputStream open = null;
+        FileOutputStream fos = null;
+        File file = new File(getFilesDir(), "address.db");
+        if(file.exists()){
+            return;
+        }
+        try {
+            open = getAssets().open("address.db");
+            fos = new FileOutputStream(file);
+
+            byte[] b = new byte[1024];
+            int len = 0;
+            while((len = open.read(b))!=-1){
+                fos.write(b,0,len);
+            }
+            open.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -231,7 +260,7 @@ public class SplashActivity extends AppCompatActivity {
     private void test() {
         BlackNumberDaoImpl bndi = new BlackNumberDaoImpl(this);
         for (int i = 0; i <= 20; i++) {
-            boolean seccess = bndi.insert(new BlackNumber("张琦"+i, "1327066570"+i, (new Random().nextInt(3)+1)+""));
+            boolean seccess = bndi.insert(new BlackNumber("张琦" + i, "1327066570" + i, (new Random().nextInt(3) + 1) + ""));
         }
     }
 
@@ -247,10 +276,10 @@ public class SplashActivity extends AppCompatActivity {
          * 是否需要更新  通过getVerisonCode()方法和网络获取的版本号来判断
          */
         boolean flag = SpUtil.getBoolean(this, Constant.AUTO_UPDATE, true);
-        if(flag){
+        if (flag) {
             checkVersionCode();
-        }else{
-            handler.sendEmptyMessageDelayed(ENTERHOME,2000);
+        } else {
+            handler.sendEmptyMessageDelayed(ENTERHOME, 2000);
         }
     }
 
@@ -291,7 +320,6 @@ public class SplashActivity extends AppCompatActivity {
                             msg.what = NO_UPDATE;
                         }
                     } else {
-                        //TODO    响应码不是200的情况
                         msg.what = RESPON;
                     }
                 } catch (ProtocolException e) {
@@ -317,8 +345,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 
-    private void enterHome(){
-        startActivity(new Intent(SplashActivity.this,HomeActivity.class));
+    private void enterHome() {
+        startActivity(new Intent(SplashActivity.this, HomeActivity.class));
         finish();
     }
 }
