@@ -5,20 +5,20 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.view.WindowManager;
-import android.widget.TextView;
+
+import heima.it.safe.dao.SqliteDao;
+import heima.it.safe.view.AddressView;
 
 public class AddressService extends Service {
 
     private AddressReceiver mAr;
     private TelephonyManager mTm;
     private MyAddressPhoneState mMaps;
-    private WindowManager mWm;
-    private TextView mTv;
+    private AddressView mAv;
+
 
     public AddressService() {
     }
@@ -31,6 +31,10 @@ public class AddressService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        /**
+         * 创建窗口
+         */
+        mAv = new AddressView(this);
         /**
          * 来电的归属地显示
          */
@@ -47,63 +51,28 @@ public class AddressService extends Service {
         mTm.listen(mMaps,PhoneStateListener.LISTEN_CALL_STATE);
     }
 
-    /**
-     * 展示归属地window
-     */
-    private void showWindow() {
-        mWm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
-        /**
-         * 属性
-         */
-        WindowManager.LayoutParams mParams = new WindowManager.LayoutParams();
-        mParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        mParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        mParams.format = PixelFormat.TRANSLUCENT;
-        mParams.type = WindowManager.LayoutParams.TYPE_TOAST;
-        mParams.setTitle("Toast");
-        mParams.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-
-        mTv = new TextView(this);
-        mTv.setText("呵呵");
-        mTv.setTextSize(25);
-        mWm.addView(mTv,mParams);
-    }
-
-    /**
-     * 销毁归属地window
-     */
-    private void destroyWindow() {
-        if(mTv != null){
-            if(mTv.getParent() != null){
-                mWm.removeView(mTv);
-                mWm = null;
-            }
-        }
-    }
-
     class MyAddressPhoneState extends PhoneStateListener {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
             super.onCallStateChanged(state, incomingNumber);
             switch(state){
                 case TelephonyManager.CALL_STATE_IDLE:
-                    destroyWindow();
+                    mAv.destroyWindow();
                 break;
                 case TelephonyManager.CALL_STATE_RINGING:
-                    showWindow();
+                    String address = SqliteDao.getAddress(getApplicationContext(), incomingNumber);
+                    mAv.showAddress(address);
                     break;
             }
         }
     }
 
-
-
     class AddressReceiver extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
-            showWindow();
+            String number = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+            String address = SqliteDao.getAddress(getApplicationContext(), number);
+            mAv.showAddress(address);
         }
     }
 

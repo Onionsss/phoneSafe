@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+    android:padding="5dp">
+    <ImageView
+        android:id="@+id/address_style_iv"
+        android:layout_width="90dp"
+        android:background="@drawable/shape_address_toast_bg_gray"
+        android:layout_height="45dp"/>
+    <TextView
+        android:id="@+id/address_style_tv"
+        android:layout_width="wrap_content"
+        android:text="金属灰"
+        android:textSize="25sp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/address_style_iv"
+        android:layout_centerVertical="true"
+        android:layout_height="wrap_content"/>
+    <ImageView
+        android:id="@+id/address_style_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/ic_selected"/>
+</RelativeLayout>

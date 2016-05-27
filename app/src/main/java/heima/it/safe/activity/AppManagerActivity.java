@@ -48,6 +48,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
     private AppManagerAdapter mAdapter;
     private ImageView mAppmanager_iv;
     private List<AppInfo> mAllApps;
+    private TextView mAppmanager_tv_kind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
         mApp_tv_rom = (TextView) findViewById(R.id.app_tv_rom);
         mApp_tv_sd = (TextView) findViewById(R.id.app_tv_sd);
         mAppmanager_iv = (ImageView) findViewById(R.id.appmanager_iv);
+        mAppmanager_tv_kind = (TextView) findViewById(R.id.appmanager_tv_kind);
     }
 
     private void initData() {
@@ -141,12 +143,26 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
         app_lv.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                pwClose();
+
+
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                pwClose();
+                if(firstVisibleItem == 0 || firstVisibleItem == userApp.size()+1 && firstVisibleItem == userApp.size()+2){
+                    mAppmanager_tv_kind.setVisibility(View.GONE);
+                }else{
+                    mAppmanager_tv_kind.setVisibility(View.VISIBLE);
+                }
 
+                if(userApp != null && systemApp != null){
+                    if(firstVisibleItem < userApp.size()+1){
+                        mAppmanager_tv_kind.setText("用户程序("+userApp.size()+")个");
+                    }else{
+                        mAppmanager_tv_kind.setText("系统程序("+systemApp.size()+")个");
+                    }
+                }
             }
         });
     }

@@ -11,7 +11,6 @@ import java.io.File;
  */
 public class SqliteDao {
 
-
     public static String getAddress(Context context, String phone) {
         File file = new File(context.getFilesDir(), "address.db");
         String str = "未知号码";
@@ -55,7 +54,6 @@ public class SqliteDao {
                             str = cursor.getString(0);
                         } else {
                             cursor.close();
-
                             // 查询3位区号
                             cursor = sd.rawQuery(
                                     "select location from data2 where area =?",
@@ -71,7 +69,6 @@ public class SqliteDao {
                     break;
             }
         }
-
         return str;
     }
 }

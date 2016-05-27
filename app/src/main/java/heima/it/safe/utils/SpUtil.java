@@ -27,4 +27,13 @@ public class SpUtil {
         SharedPreferences sp = context.getSharedPreferences(SP_URI,Context.MODE_PRIVATE);
         return sp.getString(key,value);
     }
+
+    public static void putInt(Context context,String key,int value){
+        SharedPreferences sp = context.getSharedPreferences(SP_URI,Context.MODE_PRIVATE);
+        sp.edit().putInt(key,value).apply();
+    }
+    public static int getInt(Context context,String key,int value){
+        SharedPreferences sp = context.getSharedPreferences(SP_URI,Context.MODE_PRIVATE);
+        return sp.getInt(key,value);
+    }
 }

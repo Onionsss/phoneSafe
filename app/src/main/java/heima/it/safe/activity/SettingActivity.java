@@ -10,8 +10,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import heima.it.safe.R;
 import heima.it.safe.constant.Constant;
+import heima.it.safe.dialog.AddressStyleDialog;
 import heima.it.safe.service.AddressService;
 import heima.it.safe.service.BlackNumberService;
+import heima.it.safe.service.RocketService;
 import heima.it.safe.utils.SpUtil;
 import heima.it.safe.view.MySettingView;
 import heima.it.safe.view.ServiceRunning;
@@ -21,9 +23,10 @@ public class SettingActivity extends AppCompatActivity {
     @Bind(R.id.mysetting_aotu)
     MySettingView mysetting_aotu;
 
-
     private MySettingView mysetting_lanjie;
     private MySettingView mMysetting_addressshow;
+    private MySettingView mMysetting_shotrocket;
+    private MySettingView mMysetting_style;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +88,34 @@ public class SettingActivity extends AppCompatActivity {
                 mMysetting_addressshow.check();
             }
         });
+
+        mMysetting_shotrocket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**
+                 * 开启发射火箭服务
+                 */
+                startService(new Intent(SettingActivity.this, RocketService.class));
+            }
+        });
+
+        /**
+         * 归属地的风格设置
+         */
+        mMysetting_style.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddressStyleDialog asd = new AddressStyleDialog(SettingActivity.this,R.style.AddressDialogStyle);
+                asd.show();
+            }
+        });
     }
 
     private void initView() {
         mysetting_lanjie = (MySettingView) findViewById(R.id.mysetting_lanjie);
         mMysetting_addressshow = (MySettingView) findViewById(R.id.mysetting_addressshow);
+        mMysetting_shotrocket = (MySettingView) findViewById(R.id.mysetting_shotrocket);
+        mMysetting_style = (MySettingView) findViewById(R.id.mysetting_style);
 
         boolean flag = SpUtil.getBoolean(this, Constant.AUTO_UPDATE, true);
         mysetting_aotu.setChecked(flag);

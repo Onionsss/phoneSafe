@@ -234,12 +234,12 @@ public class SplashActivity extends AppCompatActivity {
     private void initData() {
         InputStream open = null;
         FileOutputStream fos = null;
-        File file = new File(getFilesDir(), "address.db");
+        File file = new File(getFilesDir(), "commonnum.db");
         if(file.exists()){
             return;
         }
         try {
-            open = getAssets().open("address.db");
+            open = getAssets().open("commonnum.db");
             fos = new FileOutputStream(file);
 
             byte[] b = new byte[1024];

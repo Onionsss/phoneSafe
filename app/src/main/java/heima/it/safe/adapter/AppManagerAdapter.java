@@ -3,6 +3,7 @@ package heima.it.safe.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.format.Formatter;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -64,6 +65,7 @@ public class AppManagerAdapter extends BaseAdapter{
             tv.setTextSize(25);
             tv.setPadding(5,5,5,5);
             tv.setBackgroundColor(Color.GRAY);
+            tv.setGravity(Gravity.CENTER);
             tv.setTextColor(Color.BLACK);
             return tv;
         }else if(position == userApp.size()+1){
@@ -72,6 +74,7 @@ public class AppManagerAdapter extends BaseAdapter{
             tv.setTextSize(25);
             tv.setPadding(5,5,5,5);
             tv.setBackgroundColor(Color.GRAY);
+            tv.setGravity(Gravity.CENTER);
             tv.setTextColor(Color.BLACK);
             return tv;
         }

@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+    <!-- 显示可以触摸的Window -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application
         android:allowBackup="true"
@@ -113,6 +115,14 @@
             android:enabled="true"
             android:exported="true">
         </service>
+        <service
+            android:name=".service.RocketService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+
+        <activity android:name=".activity.FindPhoneActivity">
+        </activity>
     </application>
 
 </manifest>

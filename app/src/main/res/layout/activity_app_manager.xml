@@ -46,6 +46,17 @@
             android:layout_height="match_parent">
 
         </ListView>
+        <TextView
+            android:id="@+id/appmanager_tv_kind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="系统程序"
+            android:background="@color/gray2"
+            android:textSize="25sp"
+            android:textColor="@color/black_0"
+            android:visibility="gone"
+            android:padding="5dp"
+            android:gravity="center"/>
     </FrameLayout>
 
 </LinearLayout>

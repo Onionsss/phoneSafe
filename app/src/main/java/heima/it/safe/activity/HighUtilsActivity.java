@@ -37,6 +37,9 @@ public class HighUtilsActivity extends AppCompatActivity implements View.OnClick
             case R.id.highutils_address:
                 startActivity(new Intent(this,AddressActivity.class));
             break;
+            case R.id.highutils_findphone:
+                startActivity(new Intent(this,FindPhoneActivity.class));
+                break;
         }
     }
 }

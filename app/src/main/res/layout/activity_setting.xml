@@ -40,6 +40,15 @@
         >
     </heima.it.safe.view.MySettingView>
     <heima.it.safe.view.MySettingView
+        android:id="@+id/mysetting_shotrocket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        itheima:biaoti="发射火箭实验"
+        itheima:img="mid"
+        itheima:mybutton="false"
+        >
+    </heima.it.safe.view.MySettingView>
+    <heima.it.safe.view.MySettingView
         android:id="@+id/mysetting_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

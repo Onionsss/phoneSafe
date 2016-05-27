@@ -78,4 +78,15 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <!-- 自定义Dialog样式 -->
+    <style name="AddressDialogStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowAnimationStyle">@style/AddressDialogAnimation</item>
+    </style>
+
+    <style name="AddressDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/input_method_enter</item>
+        <item name="android:windowExitAnimation">@anim/input_method_exit</item>
+    </style>
 </resources>
