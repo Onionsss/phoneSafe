@@ -16,7 +16,7 @@ import heima.it.safe.service.BlackNumberService;
 import heima.it.safe.service.RocketService;
 import heima.it.safe.utils.SpUtil;
 import heima.it.safe.view.MySettingView;
-import heima.it.safe.view.ServiceRunning;
+import heima.it.safe.utils.ServiceRunning;
 
 public class SettingActivity extends AppCompatActivity {
 

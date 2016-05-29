@@ -1,1 +1,1 @@
-include ':app', ':blacknumber'
+include ':app', ':blacknumber', ':appmanager'

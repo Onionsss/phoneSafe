@@ -1,4 +1,4 @@
-package heima.it.safe.view;
+package heima.it.safe.utils;
 
 import android.app.ActivityManager;
 import android.app.Service;

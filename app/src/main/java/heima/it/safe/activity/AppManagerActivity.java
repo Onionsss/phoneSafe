@@ -4,6 +4,8 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,7 +18,6 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import heima.it.safe.R;
 import heima.it.safe.adapter.AppManagerAdapter;
 import heima.it.safe.bean.AppInfo;
 import heima.it.safe.utils.AppInfos;
+import heima.it.safe.view.MyProgressView;
 
 public class AppManagerActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int UNINSTALL = 45;
@@ -39,8 +41,6 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
     private List<AppInfo> appList;
     private List<AppInfo> systemApp = new ArrayList<>();
     private List<AppInfo> userApp = new ArrayList<>();
-    private TextView mApp_tv_rom;
-    private TextView mApp_tv_sd;
     private PopupWindow mPw;
     private int lastPosition;
     private AppInfo appInfo;
@@ -49,6 +49,8 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
     private ImageView mAppmanager_iv;
     private List<AppInfo> mAllApps;
     private TextView mAppmanager_tv_kind;
+    private MyProgressView mAppmanager_mpv_rom;
+    private MyProgressView mAppmanager_mpv_sd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +59,18 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
         ButterKnife.bind(this);
         initView();
         initData();
+        initListener();
+    }
+
+    private void initListener() {
+        mAppmanager_tv_kind.setOnClickListener(this);
     }
 
     private void initView() {
-        mApp_tv_rom = (TextView) findViewById(R.id.app_tv_rom);
-        mApp_tv_sd = (TextView) findViewById(R.id.app_tv_sd);
         mAppmanager_iv = (ImageView) findViewById(R.id.appmanager_iv);
         mAppmanager_tv_kind = (TextView) findViewById(R.id.appmanager_tv_kind);
+        mAppmanager_mpv_rom = (MyProgressView) findViewById(R.id.appmanager_mpv_rom);
+        mAppmanager_mpv_sd = (MyProgressView) findViewById(R.id.appmanager_mpv_sd);
     }
 
     private void initData() {
@@ -71,10 +78,18 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
          * rom可用空间
          */
         long romFree = Environment.getDataDirectory().getFreeSpace();
+        long romUsable = Environment.getDataDirectory().getUsableSpace();
         long sdFree = Environment.getExternalStorageDirectory().getFreeSpace();
-        mApp_tv_rom.setText("内存卡可用空间:" + Formatter.formatFileSize(this, romFree));
-        mApp_tv_sd.setText("SD卡可用空间:" + Formatter.formatFileSize(this, sdFree));
+        long sdUsable = Environment.getExternalStorageDirectory().getUsableSpace();
+        mAppmanager_mpv_rom.setWhere("内存:");
+        mAppmanager_mpv_rom.setUse(Formatter.formatFileSize(this,romUsable));
+        mAppmanager_mpv_rom.setHave(Formatter.formatFileSize(this,romFree));
+        mAppmanager_mpv_rom.setProgress((int)((romUsable*100)/(romUsable+romFree)));
 
+        mAppmanager_mpv_sd.setWhere("SD卡:");
+        mAppmanager_mpv_sd.setUse(Formatter.formatFileSize(this,sdUsable));
+        mAppmanager_mpv_sd.setHave(Formatter.formatFileSize(this,sdFree));
+        mAppmanager_mpv_sd.setProgress((int)((sdUsable*100)/(sdUsable+sdFree)));
         new Task().execute();
     }
 
@@ -128,9 +143,13 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPostExecute(List<AppInfo> aVoid) {
             super.onPostExecute(aVoid);
-            mAdapter = new AppManagerAdapter(AppManagerActivity.this, appList, systemApp, userApp);
+            mAdapter = new AppManagerAdapter(AppManagerActivity.this, systemApp, userApp);
             app_lv.setAdapter(mAdapter);
+            /**
+             * 适配完数据 隐藏progress 显示listView
+             */
             mAppmanager_iv.setVisibility(View.GONE);
+            mAppmanager_tv_kind.setVisibility(View.VISIBLE);
             initScrollListener();
             initItemListener();
         }
@@ -149,18 +168,11 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                pwClose();
-                if(firstVisibleItem == 0 || firstVisibleItem == userApp.size()+1 && firstVisibleItem == userApp.size()+2){
-                    mAppmanager_tv_kind.setVisibility(View.GONE);
-                }else{
-                    mAppmanager_tv_kind.setVisibility(View.VISIBLE);
-                }
-
-                if(userApp != null && systemApp != null){
-                    if(firstVisibleItem < userApp.size()+1){
-                        mAppmanager_tv_kind.setText("用户程序("+userApp.size()+")个");
-                    }else{
-                        mAppmanager_tv_kind.setText("系统程序("+systemApp.size()+")个");
+                if (userApp != null && systemApp != null) {
+                    if (firstVisibleItem < userApp.size() + 1) {
+                        mAppmanager_tv_kind.setText("用户程序(" + userApp.size() + ")个");
+                    } else {
+                        mAppmanager_tv_kind.setText("系统程序(" + systemApp.size() + ")个");
                     }
                 }
             }
@@ -174,11 +186,6 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
         app_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (lastPosition == position) {
-                    pwClose();
-                    return;
-                }
-                pwClose();
                 Object obj = parent.getItemAtPosition(position);
                 if (obj != null && obj instanceof AppInfo) {
                     appInfo = (AppInfo) obj;
@@ -189,17 +196,24 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
                     /**
                      * 查找控件设置点击事件
                      */
-                    LinearLayout popup_ll_uninstall = (LinearLayout) popupView.findViewById(R.id.popup_ll_uninstall);
-                    LinearLayout popup_ll_open = (LinearLayout) popupView.findViewById(R.id.popup_ll_open);
-                    popup_ll_uninstall.setOnClickListener(AppManagerActivity.this);
-                    popup_ll_open.setOnClickListener(AppManagerActivity.this);
+                if(mPw == null){
+                    popupView.findViewById(R.id.popup_ll_uninstall).setOnClickListener(AppManagerActivity.this);
+                    popupView.findViewById(R.id.popup_ll_open).setOnClickListener(AppManagerActivity.this);
+                    popupView.findViewById(R.id.popup_ll_share).setOnClickListener(AppManagerActivity.this);
+                    popupView.findViewById(R.id.popup_ll_info).setOnClickListener(AppManagerActivity.this);
                     mPw = new PopupWindow(popupView, -2, -2);
-
+                    /**
+                     * 按别处时pw消失
+                     */
+                    mPw.setFocusable(true);
+                    mPw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    mPw.setAnimationStyle(R.style.PopupAnimation);
+                }
                     int[] location = new int[2];
                     view.getLocationInWindow(location);
                     mPw.showAtLocation(parent, Gravity.LEFT + Gravity.TOP, 80, location[1]);
                 }
-                lastPosition = position;
+//                lastPosition = position;
             }
         });
     }
@@ -213,6 +227,42 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
             case R.id.popup_ll_open:
                 open();
                 break;
+            case R.id.popup_ll_share:
+                share();
+                break;
+            case R.id.popup_ll_info:
+                info();
+                break;
+            case R.id.appmanager_tv_kind:
+                returnTop();
+                break;
+        }
+    }
+
+    private void share() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "发现一个好玩的应用: " + appInfo.getPackageName());
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
+    }
+
+    private void info() {
+        Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
+        intent.setData(Uri.parse("package:"+appInfo.getPackageName()));
+        startActivity(intent);
+        pwClose();
+    }
+
+    /**
+     * 如果点击时 将当前第一个显示的条目移动到开始位置
+     */
+    private void returnTop() {
+        String flags = mAppmanager_tv_kind.getText().toString();
+        if (flags.contains("用户")) {
+            app_lv.setSelection(0);
+        } else if (flags.contains("系统")) {
+            app_lv.setSelection(userApp.size() + 1);
         }
     }
 
@@ -222,7 +272,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
     private void open() {
         Intent launchIntentForPackage = this.getPackageManager().getLaunchIntentForPackage(appInfo.getPackageName());
         this.startActivity(launchIntentForPackage);
-        pwClose();
+        pwClose();  
     }
 
     /**
@@ -288,7 +338,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
      */
     @Override
     protected void onDestroy() {
-        pwClose();
+//        pwClose();
         super.onDestroy();
     }
 }
